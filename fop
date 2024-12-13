@@ -1,0 +1,143 @@
+grocery_list = []
+user_name = "" 
+
+def display_menu():
+    print("\n----My Grocery List----")
+    print("1. Append product(s)")
+    print("2. Compute total of the prices - all products (including quantity)")
+    print("3. Compute total of the prices of specific product")
+    print("4. Edit product")
+    print("5. Edit price")
+    print("6. Remove product")
+    print("7. Display list with quantity and prices")
+    print("8. Sort grocery list by total price (ascending)")
+    print("9. Search for the product")
+    print("0. Exit")
+    return input("Enter choice (0-9): ")
+
+def append_product():
+    num_products = int(input("How many products would you like to add? "))
+    for i in range(1, num_products + 1):
+        print(f"\nEnter details for product {i}:")
+        name = input("Enter the name of the product: ")
+        quantity = int(input("Enter the quantity of the product: "))
+        price = float(input("Enter the price of the product (per item): "))
+        grocery_list.append({"name": name, "quantity": quantity, "price": price})
+        print(f"{quantity} {name}(s) added at {price} php each.")
+
+def compute_total_all():
+    total = sum(item["quantity"] * item["price"] for item in grocery_list)
+    print(f"Total of all the products (including quantities): {total} php")
+
+def compute_total_specific():
+    if grocery_list:
+        print("List of products:")
+        for i, item in enumerate(grocery_list):
+            print(f"{i}. {item['quantity']} {item['name']} - {item['price']} php each")
+        index = int(input("Enter the index of the product to compute total: "))
+        if 0 <= index < len(grocery_list):
+            product = grocery_list[index]
+            total = product["quantity"] * product["price"]
+            print(f"Total price for {product['quantity']} {product['name']} is: {total} php")
+        else:
+            print("Invalid index.")
+    else:
+        print("The grocery list is empty.")
+
+def edit_product():
+    if grocery_list:
+        print("List of products:")
+        for i, item in enumerate(grocery_list):
+            print(f"{i}. {item['name']}")
+        index = int(input("Enter the index of the product to edit: "))
+        if 0 <= index < len(grocery_list):
+            new_name = input("Enter the new name of the product: ")
+            grocery_list[index]["name"] = new_name
+            print("Product name updated.")
+        else:
+            print("Invalid index.")
+    else:
+        print("The grocery list is empty.")
+
+def edit_price():
+    if grocery_list:
+        print("List of products:")
+        for i, item in enumerate(grocery_list):
+            print(f"{i}. {item['name']}")
+        index = int(input("Enter the index of the product to edit price: "))
+        if 0 <= index < len(grocery_list):
+            new_price = float(input("Enter the new price of the product (per item): "))
+            grocery_list[index]["price"] = new_price
+            print("Product price updated.")
+        else:
+            print("Invalid index.")
+    else:
+        print("The grocery list is empty.")
+
+def remove_product():
+    if grocery_list:
+        print("List of products:")
+        for i, item in enumerate(grocery_list):
+            print(f"{i}. {item['name']}")
+        index = int(input("Enter the index of the product to remove: "))
+        if 0 <= index < len(grocery_list):
+            removed_item = grocery_list.pop(index)
+            print(f"Removed {removed_item['name']} from the list.")
+        else:
+            print("Invalid index.")
+    else:
+        print("The grocery list is empty.")
+
+def display_list():
+    if grocery_list:
+        for i, item in enumerate(grocery_list):
+            print(f"{i}. {item['quantity']} {item['name']} - {item['price']} php each")
+    else:
+        print("The grocery list is empty.")
+
+def sort_grocery_list():
+    if grocery_list:
+        grocery_list.sort(key=lambda x: x["quantity"] * x["price"])
+        print("\nSorted grocery list by total price (lowest to highest):")
+        for i, item in enumerate(grocery_list):
+            total_price = item["quantity"] * item["price"]
+            print(f"{i}. {item['name']} - {total_price} php")
+    else:
+        print("The grocery list is empty.")
+
+def search_product():
+    name = input("Enter the name of the product to search for: ")
+    found = any(item["name"].lower() == name.lower() for item in grocery_list)
+    if found:
+        print(f"{name} is available on the list.")
+    else:
+        print(f"{name} is not available on the list.")
+
+user_name = input("Enter your name: ")
+print(f"Welcome, {user_name}!")
+
+while True:
+    choice = display_menu()
+    if choice == '1':
+        append_product()
+    elif choice == '2':
+        compute_total_all()
+    elif choice == '3':
+        compute_total_specific()
+    elif choice == '4':
+        edit_product()
+    elif choice == '5':
+        edit_price()
+    elif choice == '6':
+        remove_product()
+    elif choice == '7':
+        display_list()
+    elif choice == '8':
+        sort_grocery_list()
+    elif choice == '9':
+        search_product()
+    elif choice == '0':
+        print("Exiting the program. Have a nice day.")
+        break
+    else:
+        print("Invalid choice. Please enter a number between 0 and 9.")
